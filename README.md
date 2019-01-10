@@ -5,7 +5,7 @@
 ## Usage
 1. Click on the green icon "Clone or download" then "Download ZIP"
 2. Unzip
-3. Click on the HTML (web browser icon)
+3. Open HTML file (web browser icon)
 4. Follow links to install R and RStudio
 5. Open R Markdown (RMD) file (it should automatically open with RStudio)
 

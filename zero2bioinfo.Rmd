@@ -10,27 +10,36 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # Welcome
-You'd like to analyze and visualize your data on a computer. Your workflow will be the most flexible, powerful, and reproducible if it involves *programming*. Programming looks intimidating, but once you understand the concepts, you should be able to Google questions, understand the answers, and be productive. That's the goal of this tutorial.
+You'd like to analyze and visualize your data on a computer. Your workflow will be the most flexible, powerful, and reproducible if it involves *programming*. This type of programming is now called *data science*, and it's hot. In 2018, *data scientist* was the best job in America for the third year in a row according to [Glassdoor](https://www.glassdoor.com/List/Best-Jobs-in-America-LST_KQ0,20.htm). 
 
-Once you decide to program, you need to decide which software to use. There's a tremendous amount of software development ongoing in this field, now termed *data science*, particularly in the free languages [R](https://www.r-project.org/) and [Python](https://www.python.org/). In academia, an [analysis](http://r4stats.com/articles/popularity/) of statistical software in Google Scholar papers shows that **R** is currently the 2nd most used software, and is overtaking other languages. (If you're switching from SAS or SPSS, the author of this analysis also wrote [R for SAS and SPSS Users](http://r4stats.com/books/r4sas-spss/).)
+Programming looks intimidating, but once you understand the concepts, you should be able to Google questions, understand the answers, and be productive. That's the goal of this tutorial.
 
-![*The Popularity of Data Science Software*, Fig 2d](Fig_2d_ScholarlyImpact2016.png)
+Once you decide to program, you need to decide which software to use, so (of course) we'll look at some data. Data scientist job postings on [Indeed](https://www.indeed.com) often include the free languages [R](https://www.r-project.org/) and [Python](https://www.python.org/).
+
+![[Indeed "data scientist" job listings](https://blog.revolutionanalytics.com/2017/02/job-trends-for-r-and-python.html)](job_trends.png)
+
+In academia, statistical software in Google Scholar papers shows that R is currently the 2nd most used software, and is growing. (If you're switching from SAS or SPSS, the author of this analysis also wrote [R for SAS and SPSS Users](http://r4stats.com/books/r4sas-spss/).)
+
+![[The Popularity of Data Science Software, Fig 2d](http://r4stats.com/articles/popularity/)](Fig_2d_ScholarlyImpact2016.png)
 
 # R
 - R is a free language and software for statistical computing and graphics  
 - R has thousands of free contributed packages, such as roughly 1000 bioinformatics packages that make up the [Bioconductor](https://www.bioconductor.org/) project  
 - You can download base R for [Windows](https://cloud.r-project.org/bin/windows/base/) or [Mac OS X](https://cloud.r-project.org/bin/macosx/) or Linux
 
-# Resources
+## Resources
 In RStudio go to Help/R Help, then
+
 - [Learning R Online](https://www.rstudio.com/online-learning/). One resource they cite is the free book [R for Data Science](https://r4ds.had.co.nz/), which has a particularly helpful chapter on [data visualization](https://r4ds.had.co.nz/data-visualisation.html) using the popular R package `ggplot2`.  
-- An Introduction to R. The intro is also available in [PDF](http://cran.r-project.org/doc/manuals/R-intro.pdf). I found it (especially the first six chapters, which is only 30 pages) very helpful when I was learning R.
+- *An Introduction to R*. The intro is also available in [PDF](http://cran.r-project.org/doc/manuals/R-intro.pdf). I found it (especially the first six chapters, which is only 30 pages) very helpful when I was learning R.  
 - RStudio also maintains many [cheatsheets](https://www.rstudio.com/resources/cheatsheets/), including for Base R
 
 Harvard R/bioinformatics [trainings](http://bioinformatics.sph.harvard.edu/training/)
 
-# R packages developed by the Core
-Dr. Hui Pan (Bioinfo & Biostat Core) and I have developed several R packages to streamline bioinformatics analysis. These are based on the popular R package [limma](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4402510/), which uses linear modeling of omics data with sophisticated variance estimation to improve power, and has been validated multiple times. Our packages are freely available on the popular code repository [Github](https://github.com/). R packages on Github can be directly installed in R. Two of our packages that we'll go over today are [ezlimma](https://github.com/jdreyf/ezlimma) and [ezlimmaplot](https://github.com/jdreyf/ezlimmaplot).
+## R packages developed by the Core
+Dr. Hui Pan (Bioinfo & Biostat Core) and I have developed several R packages to streamline bioinformatics analysis. These are based on the popular R package [limma](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4402510/), which applies linear modeling of omics data with sophisticated variance estimation to improve power, and has been validated multiple times. Our packages are freely available on the popular code repository [Github](https://github.com/). R packages on Github can be directly installed in R.
+
+Our analysis package is [ezlimma](https://github.com/jdreyf/ezlimma) and our plotting package is [ezlimmaplot](https://github.com/jdreyf/ezlimmaplot), whose README includes installation instructions for both. 
 
 # RStudio
 - [RStudio](https://www.rstudio.com/) is an integrated development environment (IDE) for R  
@@ -431,7 +440,7 @@ pv <- apply(gx, MARGIN = 1, FUN=function(row.v){
 ```
 
 # `ezlimma` package
-You can install and load `ezlimma` by following instructions at [ezlimma](https://github.com/jdreyf/ezlimma). `ezlimma`'s tutorial is presented as a *vignette*, like many R packages.
+You can install `ezlimma` by following instructions at [ezlimma](https://github.com/jdreyf/ezlimma). `ezlimma`'s tutorial is presented as a *vignette*, like many R packages.
 
 ```{r}
 library(ezlimma)
@@ -467,13 +476,11 @@ plot(gx["gene27",], Y)
 ```
 
 # `ezlimmaplot` package
-We can plot `ezlimma` results with `ezlimmaplot`. We'll focus on the differential expression.
-
-You can install and load `ezlimmaplot` by following instructions at [ezlimmaplot](https://github.com/jdreyf/ezlimmaplot). `ezlimmaplot`'s tutorial is also presented as a *vignette*.
+We can plot `ezlimma` results with `ezlimmaplot`. We'll focus on the differential expression. You can install `ezlimmaplot` by following instructions at [ezlimmaplot](https://github.com/jdreyf/ezlimmaplot). `ezlimmaplot`'s tutorial is presented as a *vignette*.
 
 ```{r}
 library(ezlimmaplot)
-# browseVignettes(package="ezlimmaplot") #to see vignette
+# browseVignettes(package="ezlimmaplot")
 ```
 
 ## PCA

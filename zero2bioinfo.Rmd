@@ -18,7 +18,7 @@ Once you decide to program, you need to decide which software to use, so (of cou
 
 ![[Indeed "data scientist" job listings](https://blog.revolutionanalytics.com/2017/02/job-trends-for-r-and-python.html)](job_trends.png)
 
-In academia, statistical software in Google Scholar papers shows that in 2016 R was the 2nd most used software, and growing. (If you're switching from SAS or SPSS, the author of this analysis also wrote [R for SAS and SPSS Users](http://r4stats.com/books/r4sas-spss/).)
+In academia, statistical software in Google Scholar papers shows that in 2016 R was the 2nd most used software and is growing. (If you're switching from SAS or SPSS, the author of this analysis also wrote [R for SAS and SPSS Users](http://r4stats.com/books/r4sas-spss/).)
 
 ![[The Popularity of Data Science Software, Fig 2d](http://r4stats.com/articles/popularity/)](Fig_2d_ScholarlyImpact2016.png)
 
@@ -332,7 +332,10 @@ ct$p.value
 ```
 
 # Example data set
-We'll work with a simulated gene expression matrix with 100 genes & 9 samples, split into 3 groups. `rnorm()` randomly simulates normally distributed values. We make the 1st gene up-regulated in group 'a'.
+We'll work with a simulated gene expression matrix, such as from a microarray, with 100 genes & 9 samples, split into 3 groups. `rnorm()` randomly simulates normally distributed values. We make the 1st gene up-regulated in group 'a'.
+
+We're going to treat this data as being already *processed*. For many datasets, there are zeroes or missing values that might need to be imputed; samples need to be normalized to make them comparable and amenable to statistical tests; absent genes need to be removed; sample outliers need to be assessed to examine whether some experimental variables or batch effects need to be accounted for or the samples need to be removed or down-weighted; and trends between a gene's mean expression and its variance should be accounted for, especially in RNA-seq data [voom](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2014-15-2-r29).
+
 ```{r}
 set.seed(0) #set a seed for random sampling to get reproducible results
 gx <- matrix(rnorm(n=900), nrow=100, ncol=9)
@@ -475,6 +478,8 @@ We can plot the top gene, gene27, vs. `Y`.
 plot(gx["gene27",], Y)
 ```
 
+For pathway analysis, `ezlimma` extends `limma` `roast` to write linked Excel files, as explained in the `ezlimma` vignette.
+
 # `ezlimmaplot` package
 We can plot `ezlimma` results with `ezlimmaplot`. We'll focus on the differential expression. You can install `ezlimmaplot` by following instructions at [ezlimmaplot](https://github.com/jdreyf/ezlimmaplot). `ezlimmaplot`'s tutorial is presented as a *vignette*.
 
@@ -526,5 +531,12 @@ We can also make a volcano plot for all comparisons.
 multi_volcano(tab=toptab.ann, ntop.sig = 3, lab.col="symbol")
 ```
 
+# Methods developed by the Core
+We have developed a novel method for testing causal mediation, termed High-throughput mediation analysis (`hitman`). This is applicable when treatment (or exposure) is randomized, and omics and an outcome (e.g. insulin sensitivity) are measured. Hitman then tests which analytes best mediate the effect of the treatment on the outcome.
+
+We have also developed a novel method for Pathway analysis via network smoothing in the [PANTS](https://github.com/jdreyf/PANTS) package. This allows for network-based pathway mediation analysis with `pants_hitman`, which wasn't previously available.
+
+These methods have been applied to test which analytes mediate the benefit of gastric bypass on HbA1c with Dr. ME Patti (Joslin). The paper is currently under review. We are intrested in applying these methods and developing new ones for new applications.
+
 # Conclusion
-Congratulations for making it this far. I hope this helped you become familiar enough with R so you can understand documentation, and hopefully apply some data analysis.
+Congratulations for making it this far. I hope this helped you become familiar enough with R so you can understand documentation, and hopefully analyze your data.

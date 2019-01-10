@@ -5,4 +5,9 @@
 ## Usage
 1. Click on the green icon "Clone or download" then "Download ZIP"
 2. Unzip
-3. Click on the HTML (with web browser icon). This will teach you how to install R and RStudio, so that you can properly open the R Markdown (RMD) file.
+3. Click on the HTML (web browser icon)
+4. Follow links to install R and RStudio
+5. Open R Markdown (RMD) file (it should automatically open with RStudio)
+
+## Issues
+Please report issues at [https://github.com/jdreyf/zero2bioinfo/issues](https://github.com/jdreyf/zero2bioinfo/issues)

@@ -1,6 +1,6 @@
 ---
 title: "From zero to bioinformatics in R"
-author: "Jonathan Dreyfuss, Assoc Dir, Bioinfo & Biostat Core, Joslin Diabetes Center"
+author: "Jonathan Dreyfuss PhD, Assoc Dir, Bioinfo & Biostat Core, Joslin Diabetes Center"
 date: "`r Sys.Date()`"
 output: html_document
 ---

@@ -1,0 +1,523 @@
+---
+title: "From zero to bioinformatics in R"
+author: "Jonathan Dreyfuss, Assoc Dir, Bioinfo & Biostat Core, Joslin Diabetes Center"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Welcome
+You'd like to analyze and visualize your data on a computer. Your workflow will be the most flexible, powerful, and reproducible if it involves *programming*. Programming looks intimidating, but once you understand the concepts, you should be able to Google questions, understand the answers, and be productive. That's the goal of this tutorial.
+
+Once you decide to program, you need to decide which software to use. There's a tremendous amount of software development ongoing in this field, now termed *data science*, particularly in the free languages [R](https://www.r-project.org/) and [Python](https://www.python.org/). In academia, an [analysis](http://r4stats.com/articles/popularity/) of statistical software in Google Scholar papers shows that **R** is currently the 2nd most used software, and is overtaking other languages. (In case you're interested, the author of this analysis also wrote [R for SAS and SPSS Users](http://r4stats.com/books/r4sas-spss/).) This mirrors the general trend where free programming languages dominate in popularity across computing applications.
+
+![*The Popularity of Data Science Software*, Fig 2d](Fig_2d_ScholarlyImpact2016.png)
+
+# R
+- R is a free language and software for statistical computing and graphics  
+- R has thousands of free contributed packages, such as roughly 1000 bioinformatics packages that make up the [Bioconductor](https://www.bioconductor.org/) project  
+- You can download base R for [Windows](https://cloud.r-project.org/bin/windows/base/) or [Mac OS X](https://cloud.r-project.org/bin/macosx/) or Linux
+
+# Resources
+In RStudio go to Help/R Help, then
+- [Learning R Online](https://www.rstudio.com/online-learning/). One resource they cite is the free book [R for Data Science](https://r4ds.had.co.nz/), which has a particularly helpful chapter on [data visualization](https://r4ds.had.co.nz/data-visualisation.html) using the popular R package `ggplot2`.  
+- An Introduction to R. The intro is also available in [PDF](http://cran.r-project.org/doc/manuals/R-intro.pdf). I found it (especially the first six chapters, which is only 30 pages) very helpful when I was learning R.
+- RStudio also maintains many [cheatsheets](https://www.rstudio.com/resources/cheatsheets/), including for Base R
+
+Harvard R/bioinformatics [trainings](http://bioinformatics.sph.harvard.edu/training/)
+
+# R packages developed by the Core
+Dr. Hui Pan (Bioinfo & Biostat Core) and I have developed several R packages to streamline bioinformatics analysis. These are based on the popular R package [limma](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4402510/), which uses linear modeling of omics data with sophisticated variance estimation to improve power, and has been validated multiple times. Our packages are freely available on the popular code repository [Github](https://github.com/). R packages on Github can be directly installed in R. Two of our packages that we'll go over today are [ezlimma](https://github.com/jdreyf/ezlimma) and [ezlimmaplot](https://github.com/jdreyf/ezlimmaplot).
+
+# RStudio
+- [RStudio](https://www.rstudio.com/) is an integrated development environment (IDE) for R  
+- We will be using R through RStudio  
+- You can download [RStudio Desktop: Open Source Licence](https://www.rstudio.com/products/rstudio/download/) for free
+
+## R Markdown
+This report is written in [R Markdown](https://rmarkdown.rstudio.com/), which weaves together text, figures, and code. You can "Knit" R Markdown documents into HTML, PDF, Microsoft Word, or other formats by pressing the "Knit" icon above in R Studio.
+
+## RStudio panels
+The R Markdown is in the *Source* panel. This is where you write & save your code. The *Console* is below; it executes R code. We'll look at the other panels soon.
+
+Press ctrl+enter (or cmd+enter on a mac) to send a line or highlighted portion to console. When a line is executed, its return value is displayed unless that value is assigned to a variable.
+```{r}
+1+1
+# is a comment. it doesn't get executed.
+x <- 1+1 #nothing is displayed
+```
+
+# Types
+## Numeric 
+```{r}
+x <- 4 #assigns the value 4 to variable x. '<-' represents an arrow.
+x = 4 #does the same thing.  '<-' is usually equivalent to '='.
+print(x) #you can also see the value in the Environment tab in the upper right
+x #same as print() when not in loop or function
+x+2
+sum(x, 2) #same as x+2
+```
+
+However, R is case sensitive, so this produces an error
+```{r, eval=FALSE}
+X+2 #Error: object 'X' not found
+```
+
+## Logicals
+A logical can have the values `TRUE`, `FALSE`, and `NA` ("Not Available"). You might see `TRUE` and `FALSE` abbreviated as `T` and `F`, respectively, but I don't recommend using the abbreviation. You can create logicals with: `<`, `<=`, `>`, `>=`, `==` for equality, `!=` for inequality. Logical operators are: `!` for *not*; `&` for *and*; `|` for *or*.
+```{r}
+4==4 #is 4 equal to 4? 
+
+4!=5 #is 4 not equal to 5?
+x <- 4 > 5 #assign the value of 4>5 (i.e. FALSE) to x
+!x #not x
+x | (5>4)
+x & TRUE
+```
+
+An easy mistake is to check equality with `=`.
+```{r, eval=FALSE}
+4=4 #doesn't work, '=' is for assigning values to variables
+```
+
+We use logicals in `if` statements.
+```{r}
+z <- 3
+if (z==3){ 
+  print('z is 3') 
+}
+```
+
+We can also add an action if our condition is `FALSE`.
+
+```{r}
+if (z==4){ 
+  print('z is 4') 
+} else {
+  print('z is not 4')
+}
+```
+
+## Characters
+```{r}
+x <- 'hello' #a character string
+x <- "hello" #same as above, can use single or double quotes
+x
+```
+
+Can paste character strings together
+```{r}
+paste(x, 'world')
+```
+
+## `NA` (*Not Available*) values
+This is for missing data. `NA`s are treated specially.
+```{r}
+y <- NA #data for y is missing
+y+1 #don't know y, so the result is also missing
+is.na(y) #test if a value is NA
+sum(y, 1, na.rm=TRUE) #ignore NAs in sum
+```
+
+## Getting help
+To get help on `sum()` function, can Google: "r sum" or "sum in r". If you know the function name, you can search R Studio's *Help* tab in the bottom right panel with:
+```{r, eval=FALSE}
+?sum
+```
+
+## Change types, called *coercion*
+Functions sometimes need input to be of a particular type, e.g. can coerce numbers to character.
+```{r}
+as.character(z) #can tell it's a character because it's now in quotes
+#or logical to numeric
+as.numeric(TRUE) #1
+as.numeric(FALSE) #0
+```
+
+# Vectors
+We want a variable to be able to hold more than a single value. A vector is a list of values of a common type (e.g. numbers). We can do similar operations as above to multiple values in a vector simultaneously.
+
+## Numeric vectors
+```{r}
+x <- c(1, 2, 3, 4) #c() is concatenation -- it creates a vector
+x
+```
+
+We can also use `:` to create a continuous sequence
+```{r}
+x <- 1:4
+x
+```
+
+### Practice using functions
+A more general way than `:` to create sequences is `seq()` function. Can learn about this with
+```{r, eval=FALSE}
+?seq
+```
+
+The following calls are the same
+```{r}
+seq(1,4,1)
+#R expects arguments in the given order, but you can name them & give in any order
+seq(to=4, from=1, by=1)
+#You don't always need to write out full argument names
+#it matches "fr" to argument "from", since no other arguments start w/ "fr"
+seq(to=4, fr=1, by=1)
+#You don't need to specify arguments that already have the proper default
+seq(to=4, by=1) #since default for from=1
+```
+
+### Operations on numeric vectors
+```{r}
+y <- 2*x+1 #operates on each element of x
+y
+mean(x)
+length(x) #length of vector
+var(x) #variance
+t.test(x, y)
+#we can repeat values using rep()
+rep(x, times=2)
+rep(x, each=2)
+```
+
+## Logical vectors
+```{r}
+b1 <- y > 6 #is each element of y greater than 6?
+b1
+b2 <- y == 7 #is each element of y equal to 7?
+b1 & b2 #and
+b1 | b2 #or
+!b1 #not
+#which values are TRUE?
+which(b1)
+#some functions automatically coerce logicals to numeric
+sum(b1)
+mean(b1)
+```
+
+## Character vectors
+```{r}
+first.names <- c('Frederick', 'Charles')
+last.names <- c('Banting', 'Best')
+#combine first & last names to make full names
+paste(first.names, last.names)
+```
+
+## Names
+Elements of vectors can have names. We can create a vector with names using the concatenation function `c()`.
+```{r}
+x <- c(a=4, b=5, c=6)
+x
+names(x) #this is itself a vector
+```
+
+## Subset vectors
+We can subset with square brackets using indices or names. 
+```{r}
+#select 1st element
+x[1]
+x["a"]
+#can select 2nd & 3rd element in multiple ways
+x[2:3]
+x[c(2,3)]
+x[c("b", "c")]
+x[c(FALSE, TRUE, TRUE)]
+x[-1] #all elements except the 1st
+```
+
+# Matrices & Data frames
+Matrix is a table of elements of a common type.
+```{r}
+m <- matrix(1:4, ncol=2, nrow=2) #create a numeric matrix
+m #can also double-click on "m" in upper right panel, Environment tab
+2*m+1 #operates on each element
+m <- matrix(c('a', 'b', 'c', 'd'), ncol=2, nrow=2) #create a character matrix
+#can also create by column-binding using cbind() or row-binding using rbind()
+m <- cbind(first.names, last.names)
+```
+
+## Matrices can have rownames & colnames
+```{r}
+colnames(m)
+rownames(m)
+rownames(m) <- c("FB", "CB")
+m
+```
+
+We can subset matrices & data frames using `object[rows, columns]`. As with vectors, we can specify these using indices or names.
+```{r}
+m[1,] #1st row; leaving the columns index empty selects all columns
+m[,1] #1st column
+m['FB',] #1st row
+m[2,1] #2nd row, 1st column
+m[,'first.names'] #1st column
+```
+
+## Data frames
+A data frame is a table where columns can be of different types but elements within a column are of a common type, like a vector. This is the type of table you'll likely use most of the time.
+
+### `data.frame`
+Can create data frame using `data.frame`
+```{r}
+d <- data.frame(first.names, last.names, num=1:2)
+colnames(d)
+rownames(d) <- c("FB", "CB")
+d[c("FB", "CB"), 2]
+d[,c('first.names', 'num')]
+#can also use $ for data frame columns
+d$first.names
+```
+
+# Object info
+Can get detailed info about objects with `summary()` or `str()`
+```{r}
+summary(d)
+str(d) #shows structure
+```
+
+# Factors
+Notice that the columns are factors. R turns characters into factors when reading/making tables by default. Factors are a special data type with levels. Factors can be difficult to use, so avoid when possible.
+
+```{r}
+#we can coerce factors to character
+d[,1] <- as.character(d[,1])
+str(d) #1st column is now character
+```
+
+We can also prevent R from turning characters into factors by setting a global option
+```{r}
+options(stringsAsFactors=FALSE) #applies to the rest of your session
+d2 <- data.frame(first.names, last.names, num=1:2)
+str(d2) #no factors
+```
+
+# Lists
+Lists are arbitrary collections of objects. The elements don't have to form a rectangular table or be of a common type. Lists can also be difficult to use, but you probably won't use them directly much.
+```{r}
+l <- list(pathway1=c('gene1', 'gene2'), pathway2=c('gene3', 'gene4', 'gene5'))
+l
+```
+
+We can select using names with `$`, like columns of a data frame (a data frame is actually a list under the hood).
+```{r}
+l$pathway1
+```
+
+Some functions return lists. For example, rownames and colnames of a matrix are together called dimnames, which is a list of length 2.
+```{r}
+dimnames(m)
+length(dimnames(m))
+```
+
+Another function that returns a list is correlation with `cor.test()`.
+```{r, eval=FALSE}
+?cor.test #in documentation, "Value" section says it returns a list
+```
+
+```{r}
+ct <- cor.test(1:3, c(6,5,7))
+ct$p.value
+```
+
+# Example data set
+We'll work with a simulated gene expression matrix with 100 genes & 9 samples, split into 3 groups. `rnorm()` randomly simulates normally distributed values. We make the 1st gene up-regulated in group 'a'.
+```{r}
+set.seed(0) #set a seed for random sampling to get reproducible results
+gx <- matrix(rnorm(n=900), nrow=100, ncol=9)
+#sep='' says not to put a space between 'gene' and the numbers
+gx[1, 1:3] <- gx[1, 1:3]+3
+rownames(gx) <- paste('gene', 1:100, sep='')
+#3 samples in group 'a' & 3 in group 'b' & 3 in group 'c'
+colnames(gx) <- c(paste('a', 1:3, sep=''), paste('b', 1:3, sep=''), paste('c', 1:3, sep=''))
+```
+
+We create matching phenotype & annotation data frames.
+```{r}
+pheno <- data.frame(grp=rep(c('a', 'b', 'c'), each=3))
+rownames(pheno) <- colnames(gx)
+
+# make random gene symbols: don't worry about how i generate these
+annot <- data.frame(gene.symbols=paste0(sample(x=LETTERS, size=100, replace=TRUE), 
+                                        sample(x=LETTERS, size=100, replace=TRUE), 
+                                        sample(x=LETTERS, size=100, replace=TRUE)))
+rownames(annot) <- rownames(gx)
+```
+
+# Reading / writing data
+We're going to write & read from the working directory. R assumes by default that you're reading/writing in your working directory.
+```{r}
+getwd() #see working directory
+```
+
+We can change working directory with `setwd()` or under Session/Set Working Directory. Usually we write to tab-delimited text (TXT) or comma separated value (CSV). Both can be opened in Excel, and Excel can save as both formats.
+```{r}
+write.csv(gx, "gx.csv") #now look in your working directory for the file
+#tables are read in by default as data frames
+gx <- read.csv("gx.csv", row.names=1) #row.names=1 sets 1st column as rownames
+#transform gx from data.frame to a numeric matrix
+gx <- data.matrix(gx)
+```
+
+# Many types of plots are available
+Can see in R Studio in bottom right *Plots* tab
+```{r}
+boxplot(gx)
+hist(gx)
+```
+
+Most basic is `plot()` so we'll practice with this.
+```{r}
+plot(x=gx[,1], y=gx[,2]) #scatter plot of a1 vs a2
+```
+
+We want axis labels to be sample names. We find out how to do this by looking at
+```{r, eval=FALSE}
+?plot
+```
+
+We see that the arguments we need are:
+```{r}
+plot(x=gx[,1], y=gx[,2], xlab=colnames(gx)[1], ylab=colnames(gx)[2])
+```
+
+We also want to reorient axis tick labels on y-axis. 
+```{r, eval=FALSE}
+?plot #sends us to par. par options are applicable to many plots.
+?par #there are many par options, the one we want is "las".
+```
+
+```{r}
+plot(x=gx[,1], y=gx[,2], xlab=colnames(gx)[1], ylab=colnames(gx)[2], las=1)
+```
+
+## Save plot to file
+We can use "Export" in *Plots* tab, or we can use code to open file, plot to it, then close it. We'l make a PDF with `pdf` but we could use `png`, `jpeg`, `tiff`, etc.
+```{r}
+pdf('scatter.pdf') #open graphics device
+plot(x=gx[,1], y=gx[,2], xlab=colnames(gx)[1], ylab=colnames(gx)[2], las=1)
+dev.off() #close graphics device
+```
+
+# Differential expression using base R
+
+1. one gene at a time
+2. `for` loop
+3. `apply` function
+
+## One gene at a time.
+```{r}
+t.test(gx[1, 1:3], gx[1, 4:6])$p.value #1st gene
+t.test(gx[2, 1:3], gx[2, 4:6])$p.value #2nd gene
+```
+
+## `for` loop
+This can be automated using a `for` loop. We'll create a new vector of `NA`S & assign the t-test p-values to that vector. This loops the variable `gene` through each of the values between 1 & 100, and applies a t-test on that row.
+```{r}
+pv <- rep(NA, times=100)
+for (gene in 1:100){
+  pv[gene] <- t.test(gx[gene, 1:3], gx[gene, 4:6])$p.value
+}
+```
+
+## `apply`
+There's a more advanced & faster way you `apply` the `t.test` function to each row.
+```{r}
+pv <- apply(gx, MARGIN = 1, FUN=function(row.v){ 
+  t.test(row.v[1:3], row.v[4:6])$p.value 
+})
+```
+
+# `ezlimma` package
+You can install and load `ezlimma` by following instructions at [ezlimma](https://github.com/jdreyf/ezlimma). `ezlimma`'s tutorial is presented as a *vignette*, like many R packages.
+
+```{r}
+library(ezlimma)
+# browseVignettes(package="ezlimma")
+```
+
+Here we create multiple group comparisons, and test them all in one line with `limma_contrasts`.
+
+```{r}
+contrast.v <- c(AvsB='a-b', AvsC='a-c', BvsC='b-c')
+toptab <- limma_contrasts(object=gx, grp=pheno$grp, contrast.v = contrast.v)
+```
+
+`toptab` is ordered by overall significance of the 3 tests. We round the number of significant digits in `toptab` to 3 with `signif`.
+When we add annotation, we make sure the rows of `toptab` match the rows of `annot` using `annot[rownames(toptab),]`. We write this to CSV.
+
+```{r}
+toptab.ann <- data.frame(signif(toptab, 3), symbol=annot[rownames(toptab),])
+write.csv(toptab.ann, "diff_gene_stats.csv")
+```
+
+In `ezlimma`, we can also test correlation of each gene to a continuous phenotype in one line of code.
+```{r}
+Y <- c(1:9)
+toptab.y <- ezcor(object = gx, phenotype = Y, prefix = "Y")
+```
+
+`toptab.y` is ordered by the significance of the correlation and gives correlation coefficient, p-value, and FDR. 
+
+We can plot the top gene, gene27, vs. `Y`.
+```{r}
+plot(gx["gene27",], Y)
+```
+
+# `ezlimmaplot` package
+We can plot `ezlimma` results with `ezlimmaplot`. We'll focus on the differential expression.
+
+You can install and load `ezlimmaplot` by following instructions at [ezlimmaplot](https://github.com/jdreyf/ezlimmaplot). `ezlimmaplot`'s tutorial is also presented as a *vignette*.
+
+```{r}
+library(ezlimmaplot)
+# browseVignettes(package="ezlimmaplot") #to see vignette
+```
+
+## PCA
+We make a Principal Component Analysis (PCA) plot to see how samples cluster. This is described in the `ezlimmaplot` package tutorial.
+
+We use the `ezpca` function, which is based on the R package `ggplot2`. We set `name=NA` so `ezpca` doesn't print to file.
+
+```{r}
+ezpca(object=gx, pheno.df=pheno, name=NA, color="grp")
+```
+
+## Significance histograms
+We make a histogram of p-values and false discovery rates (FDR) for each comparison.
+```{r}
+signif_hist(tab = toptab)
+```
+
+## Venn diagram
+We can see how many genes with p <= 0.05 the comparisons have in common.
+```{r}
+venn.tab <- ezvenn(tab=toptab, name=NA, p.cutoff = 0.05)
+```
+
+This plot doesn't tell us which genes are in common, but `venn.tab` has this info, which we can view.
+
+## Heatmap
+We can make a heatmap of the top genes in `toptab.ann`.
+```{r}
+top.genes <- rownames(toptab.ann)[1:10]
+ezheat(object = gx[top.genes,], labrows=toptab.ann[1:10, "symbol"], pheno.df = pheno, name=NA)
+```
+
+By default, the row scaling *centers* the rows by subtracting the row mean. Then the new mean of every row is zero. This helps see contrast between samples, instead of between rows.
+
+## Volcano plot
+We make a volcano plot for the 1st comparison, where we label the 3 most significant genes.
+```{r}
+ezvolcano(tab=toptab.ann, ntop.sig=3, lab.col="symbol", comparison = "AvsB", name=NA)
+```
+
+We can also make a volcano plot for all comparisons.
+```{r}
+multi_volcano(tab=toptab.ann, ntop.sig = 3, lab.col="symbol")
+```
+
+# Conclusion
+Congratulations for making it this far. I hope this helped you become familiar enough with R so you can understand documentation, and hopefully apply some data analysis.

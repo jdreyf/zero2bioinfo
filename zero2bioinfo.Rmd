@@ -18,7 +18,7 @@ Once you decide to program, you need to decide which software to use, so (of cou
 
 ![[Indeed "data scientist" job listings](https://blog.revolutionanalytics.com/2017/02/job-trends-for-r-and-python.html)](job_trends.png)
 
-In academia, statistical software in Google Scholar papers shows that R is currently the 2nd most used software, and is growing. (If you're switching from SAS or SPSS, the author of this analysis also wrote [R for SAS and SPSS Users](http://r4stats.com/books/r4sas-spss/).)
+In academia, statistical software in Google Scholar papers shows that in 2016 R was the 2nd most used software, and growing. (If you're switching from SAS or SPSS, the author of this analysis also wrote [R for SAS and SPSS Users](http://r4stats.com/books/r4sas-spss/).)
 
 ![[The Popularity of Data Science Software, Fig 2d](http://r4stats.com/articles/popularity/)](Fig_2d_ScholarlyImpact2016.png)
 

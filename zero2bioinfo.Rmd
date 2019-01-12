@@ -12,8 +12,6 @@ knitr::opts_chunk$set(echo = TRUE)
 # Welcome
 You'd like to analyze and visualize your data on a computer. Your workflow will be the most flexible, powerful, and reproducible if it involves *programming*. This type of programming is now called *data science*, and it's hot. In 2018, *data scientist* was the best job in America for the third year in a row according to [Glassdoor](https://www.glassdoor.com/List/Best-Jobs-in-America-LST_KQ0,20.htm). 
 
-Programming looks intimidating, but once you understand the concepts, you should be able to Google questions, understand the answers, and be productive. That's the goal of this tutorial.
-
 Once you decide to program, you need to decide which software to use, so (of course) we'll look at some data. Data scientist job postings on [Indeed](https://www.indeed.com) often include the free languages [R](https://www.r-project.org/) and [Python](https://www.python.org/).
 
 ![[Indeed "data scientist" job listings](https://blog.revolutionanalytics.com/2017/02/job-trends-for-r-and-python.html)](job_trends.png)
@@ -22,9 +20,11 @@ In academia, statistical software in Google Scholar papers shows that in 2016 R 
 
 ![[The Popularity of Data Science Software, Fig 2d](http://r4stats.com/articles/popularity/)](Fig_2d_ScholarlyImpact2016.png)
 
+Programming looks intimidating, but once you understand the basics, you should be able to Google questions, understand the answers, and be productive. I'll try to teach as much of the basics as I can in the hour I have to present this tutorial. You may wish to come back to it later to refresh and practice.
+
 # R
 - R is a free language and software for statistical computing and graphics  
-- R has thousands of free contributed packages, such as roughly 1000 bioinformatics packages that make up the [Bioconductor](https://www.bioconductor.org/) project  
+- R has thousands of free contributed packages, such as roughly 1000 bioinformatics packages that make up the [Bioconductor](https://www.bioconductor.org/) project, and packages that allow R to create data-rich, interactive [websites](https://shiny.rstudio.com/gallery/)  
 - You can download base R for [Windows](https://cloud.r-project.org/bin/windows/base/) or [Mac OS X](https://cloud.r-project.org/bin/macosx/) or Linux
 
 ## Resources
@@ -45,9 +45,12 @@ Our analysis package is [ezlimma](https://github.com/jdreyf/ezlimma) and our plo
 - [RStudio](https://www.rstudio.com/) is an integrated development environment (IDE) for R  
 - We will be using R through RStudio  
 - You can download [RStudio Desktop: Open Source Licence](https://www.rstudio.com/products/rstudio/download/) for free
+- RStudio has a lot of functionality, so it will take some time to become comfortable with
 
 ## R Markdown
-This report is written in [R Markdown](https://rmarkdown.rstudio.com/), which weaves together text, figures, and code. You can "Knit" R Markdown documents into HTML, PDF, Microsoft Word, or other formats by pressing the "Knit" icon above in R Studio.
+This report is written in [R Markdown](https://rmarkdown.rstudio.com/), which weaves together text, figures, and code. You can "Knit" R Markdown documents into HTML, PDF, Microsoft Word, or other formats by pressing the "Knit" icon in R Studio.
+
+![Image from [RStudio R Markdown lesson](https://rmarkdown.rstudio.com/lesson-9.html)](knit.png)
 
 ## RStudio panels
 The R Markdown is in the *Source* panel. This is where you write & save your code. The *Console* is below; it executes R code. We'll look at the other panels soon.

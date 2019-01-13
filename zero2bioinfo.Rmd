@@ -42,7 +42,7 @@ Dr. Hui Pan (Bioinfo & Biostat Core) and I have developed several R packages to 
 Our analysis package is [ezlimma](https://github.com/jdreyf/ezlimma) and our plotting package is [ezlimmaplot](https://github.com/jdreyf/ezlimmaplot), whose README includes installation instructions for both. 
 
 # RStudio
-- [RStudio](https://www.rstudio.com/) is an integrated development environment (IDE) for R  
+- [RStudio](https://www.rstudio.com/) is the most popular integrated development environment (IDE) for R  
 - We will be using R through RStudio  
 - You can download [RStudio Desktop: Open Source Licence](https://www.rstudio.com/products/rstudio/download/) for free
 - RStudio has a lot of functionality, so it will take some time to become comfortable with

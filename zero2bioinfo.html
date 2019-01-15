@@ -612,8 +612,9 @@ ct$p.value</code></pre>
 <p>We’re going to treat this data as being already <em>processed</em>. For many datasets, there are zeroes or missing values that might need to be imputed; samples need to be normalized to make them comparable and amenable to statistical tests; absent genes need to be removed; sample outliers need to be assessed to examine whether some experimental variables or batch effects need to be accounted for or the samples need to be removed or down-weighted; and trends between a gene’s mean expression and its variance should be accounted for, especially in RNA-seq data <a href="https://genomebiology.biomedcentral.com/articles/10.1186/gb-2014-15-2-r29">voom</a>.</p>
 <pre class="r"><code>set.seed(0) #set a seed for random sampling to get reproducible results
 gx &lt;- matrix(rnorm(n=900), nrow=100, ncol=9)
-#sep='' says not to put a space between 'gene' and the numbers
+#upregulate gene 1
 gx[1, 1:3] &lt;- gx[1, 1:3]+3
+#sep='' says not to put a space between 'gene' and the numbers
 rownames(gx) &lt;- paste('gene', 1:100, sep='')
 #3 samples in group 'a' &amp; 3 in group 'b' &amp; 3 in group 'c'
 colnames(gx) &lt;- c(paste('a', 1:3, sep=''), paste('b', 1:3, sep=''), paste('c', 1:3, sep=''))</code></pre>

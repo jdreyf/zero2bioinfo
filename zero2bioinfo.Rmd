@@ -1,7 +1,7 @@
 ---
 title: "From zero to bioinformatics in R"
 author: "Jonathan Dreyfuss PhD, Assoc Dir, Bioinfo & Biostat Core, Joslin Diabetes Center"
-date: "`r Sys.Date()`"
+date: "2019-01-16"
 output: html_document
 ---
 
@@ -10,16 +10,16 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # Welcome
-You'd like to analyze and visualize your data on a computer. Your workflow will be the most flexible, powerful, and reproducible if it involves *programming*. This type of programming is now called *data science*, and it's hot. In 2018, *data scientist* was the best job in America for the third year in a row according to [Glassdoor](https://www.glassdoor.com/List/Best-Jobs-in-America-LST_KQ0,20.htm). 
+You'd like to analyze and visualize your data on a computer. Your workflow will be the most flexible, powerful, and reproducible if it involves *programming*. This type of programming is now called *data science*, and it's a hot field. In 2018, *data scientist* was the best job in America for the third year in a row according to [Glassdoor](https://www.glassdoor.com/List/Best-Jobs-in-America-LST_KQ0,20.htm). 
 
-Once you decide to program, you need to decide which software to use, so (of course) we'll look at some data. Data scientist job postings on [Indeed](https://www.indeed.com) often include the free languages [R](https://www.r-project.org/) and [Python](https://www.python.org/).
+# Software choices
+Once you decide to program, you need to decide which software to use, so (of course) we'll look at some data.
 
 ![[Indeed "data scientist" job listings](https://blog.revolutionanalytics.com/2017/02/job-trends-for-r-and-python.html)](job_trends.png)
 
-In academia, statistical software in Google Scholar papers shows that in 2016 R was the 2nd most used software and is growing. (If you're switching from SAS or SPSS, the author of this analysis also wrote [R for SAS and SPSS Users](http://r4stats.com/books/r4sas-spss/).)
+We see that data scientist job postings on [Indeed](https://www.indeed.com) often include the free languages [R](https://www.r-project.org/) and [Python](https://www.python.org/), and sometimes SAS.
 
-![[The Popularity of Data Science Software, Fig 2d](http://r4stats.com/articles/popularity/)](Fig_2d_ScholarlyImpact2016.png)
-
+# Goal of tutorial
 Programming looks intimidating, but once you understand the basics, you should be able to Google questions, understand the answers, and be productive. I'll try to teach as much of the basics as I can in the hour I have to present this tutorial. You may wish to come back to it later to refresh and practice.
 
 # R

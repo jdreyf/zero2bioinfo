@@ -3,6 +3,8 @@ title: "From zero to bioinformatics in R"
 author: "Jonathan Dreyfuss PhD, Assoc Dir, Bioinfo & Biostat Core, Joslin Diabetes Center"
 date: "2019-01-16"
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -12,15 +14,15 @@ knitr::opts_chunk$set(echo = TRUE)
 # Welcome
 You'd like to analyze and visualize your data on a computer. Your workflow will be the most flexible, powerful, and reproducible if it involves *programming*. This type of programming is now called *data science*, and it's a hot field. In 2018, *data scientist* was the best job in America for the third year in a row according to [Glassdoor](https://www.glassdoor.com/List/Best-Jobs-in-America-LST_KQ0,20.htm). 
 
+# Goal of tutorial
+Programming looks intimidating, but once you understand the basics, you should be able to Google questions, understand the answers, and be productive. I'll try to teach as much of the basics as I can in the hour I have to present this tutorial. You may wish to come back to it later to refresh and practice.
+
 # Software choices
 Once you decide to program, you need to decide which software to use, so (of course) we'll look at some data.
 
 ![[Indeed "data scientist" job listings](https://blog.revolutionanalytics.com/2017/02/job-trends-for-r-and-python.html)](job_trends.png)
 
 We see that data scientist job postings on [Indeed](https://www.indeed.com) often include the free languages [R](https://www.r-project.org/) and [Python](https://www.python.org/), and sometimes SAS.
-
-# Goal of tutorial
-Programming looks intimidating, but once you understand the basics, you should be able to Google questions, understand the answers, and be productive. I'll try to teach as much of the basics as I can in the hour I have to present this tutorial. You may wish to come back to it later to refresh and practice.
 
 # R
 - R is a free language and software for statistical computing and graphics  
@@ -48,7 +50,11 @@ Our analysis package is [ezlimma](https://github.com/jdreyf/ezlimma) and our plo
 - RStudio has a lot of functionality, so it will take some time to become comfortable with
 
 ## R Markdown
-This report is written in [R Markdown](https://rmarkdown.rstudio.com/), which weaves together text, figures, and code. You can "Knit" R Markdown documents into HTML, PDF, Microsoft Word, or other formats by pressing the "Knit" icon in R Studio.
+This report is written in [R Markdown](https://rmarkdown.rstudio.com/), which weaves together text, figures, and code. You can "Knit" R Markdown documents into HTML, PDF, Microsoft Word, or other formats by pressing the "Knit" icon in R Studio. (This requires you to install the "knitr" package and the Core's packages "ezlimma" and "ezlimmaplot" that are used below.)
+
+```{r, eval=FALSE}
+install.packages("knitr", repos = "https://cloud.r-project.org")
+```
 
 ![Image from [RStudio R Markdown lesson](https://rmarkdown.rstudio.com/lesson-9.html)](knit.png)
 
@@ -337,7 +343,7 @@ ct$p.value
 # Example data set
 We'll work with a simulated gene expression matrix, such as from a microarray, with 100 genes & 9 samples, split into 3 groups. `rnorm()` randomly simulates normally distributed values. We make the 1st gene up-regulated in group 'a'.
 
-We're going to treat this data as being already *processed*. For many datasets, there are zeroes or missing values that might need to be imputed; samples need to be normalized to make them comparable and amenable to statistical tests; absent genes need to be removed; sample outliers need to be assessed to examine whether some experimental variables or batch effects need to be accounted for or the samples need to be removed or down-weighted; and trends between a gene's mean expression and its variance should be accounted for, especially in RNA-seq data [voom](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2014-15-2-r29).
+We're going to treat this data as being on the log2-scale and already *processed*. For many datasets, there are zeroes or missing values that might need to be imputed; samples need to be normalized to make them comparable and amenable to statistical tests; absent genes need to be removed; sample outliers need to be assessed to examine whether some experimental variables or batch effects need to be accounted for or the samples need to be removed or down-weighted; and trends between a gene's mean expression and its variance should be accounted for, especially in RNA-seq data [voom](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2014-15-2-r29).
 
 ```{r}
 set.seed(0) #set a seed for random sampling to get reproducible results
@@ -430,7 +436,7 @@ t.test(gx[2, 1:3], gx[2, 4:6])$p.value #2nd gene
 ```
 
 ## `for` loop
-This can be automated using a `for` loop. We'll create a new vector of `NA`S & assign the t-test p-values to that vector. This loops the variable `gene` through each of the values between 1 & 100, and applies a t-test on that row.
+This can be automated using a `for` loop. We'll create a new vector of `NA`s & assign the t-test p-values to that vector. This loops the variable `gene` through each of the values between 1 & 100, and applies a t-test on that row.
 ```{r}
 pv <- rep(NA, times=100)
 for (gene in 1:100){
@@ -461,8 +467,7 @@ contrast.v <- c(AvsB='a-b', AvsC='a-c', BvsC='b-c')
 toptab <- limma_contrasts(object=gx, grp=pheno$grp, contrast.v = contrast.v)
 ```
 
-`toptab` is ordered by overall significance of the 3 tests. We round the number of significant digits in `toptab` to 3 with `signif`.
-When we add annotation, we make sure the rows of `toptab` match the rows of `annot` using `annot[rownames(toptab),]`. We write this to CSV.
+`toptab` is ordered by overall significance of the 3 tests. We round the number of significant digits in `toptab` to 3 with `signif`. When we add annotation, we make sure the rows of `toptab` match the rows of `annot` using `annot[rownames(toptab),]`. We write this to CSV.
 
 ```{r}
 toptab.ann <- data.frame(signif(toptab, 3), symbol=annot[rownames(toptab),])
@@ -538,7 +543,7 @@ multi_volcano(tab=toptab.ann, ntop.sig = 3, lab.col="symbol")
 # Methods developed by the Core
 We have developed a novel method for testing causal mediation, termed High-throughput mediation analysis (`hitman`). This is applicable when treatment (or exposure) is randomized, and omics and an outcome (e.g. insulin sensitivity) are measured. Hitman then tests which analytes best mediate the effect of the treatment on the outcome.
 
-We have also developed a novel method for Pathway analysis via network smoothing in the [PANTS](https://github.com/jdreyf/PANTS) package. This allows for network-based pathway mediation analysis with `pants_hitman`, which wasn't previously available.
+We have also developed a novel method for Pathway analysis via network smoothing and multi-omics integration in the [PANTS](https://github.com/jdreyf/PANTS) package. This allows for network-based integrative pathway mediation analysis with `pants_hitman`, which wasn't previously available.
 
 These methods have been applied to test which analytes mediate the benefit of gastric bypass on HbA1c with Dr. ME Patti (Joslin). The paper is currently under review. We are intrested in applying these methods and developing new ones for new applications.
 

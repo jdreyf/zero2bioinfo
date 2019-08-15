@@ -17,13 +17,6 @@ You'd like to analyze and visualize your data on a computer. Your workflow will 
 # Goal of tutorial
 Programming looks intimidating, but once you understand the basics, you should be able to Google questions, understand the answers, and be productive. I'll try to teach as much of the basics as I can in the hour I have to present this tutorial. You may wish to come back to it later to refresh and practice.
 
-# Software choices
-Once you decide to program, you need to decide which software to use, so (of course) we'll look at some data.
-
-![[Indeed "data scientist" job listings](https://blog.revolutionanalytics.com/2017/02/job-trends-for-r-and-python.html)](job_trends.png)
-
-We see that data scientist job postings on [Indeed](https://www.indeed.com) often include the free languages [R](https://www.r-project.org/) and [Python](https://www.python.org/), and sometimes SAS.
-
 # R
 - R is a free language and software for statistical computing and graphics  
 - R has thousands of free contributed packages, such as roughly 1000 bioinformatics packages that make up the [Bioconductor](https://www.bioconductor.org/) project, and packages that allow R to create data-rich, interactive [websites](https://shiny.rstudio.com/gallery/)  
@@ -541,11 +534,9 @@ multi_volcano(tab=toptab.ann, ntop.sig = 3, lab.col="symbol")
 ```
 
 # Methods developed by the Core
-We have developed a novel method for testing causal mediation, termed High-throughput mediation analysis (`hitman`). This is applicable when treatment (or exposure) is randomized, and omics and an outcome (e.g. insulin sensitivity) are measured. Hitman then tests which analytes best mediate the effect of the treatment on the outcome.
+We have developed a novel method for testing causal mediation, termed High-throughput mediation analysis (`hitman`). This is applicable when treatment (or exposure) is randomized, and omics and an outcome (e.g. insulin sensitivity) are measured. Hitman then tests which analytes best mediate the effect of the treatment on the outcome. We have also extended this to testing mediation of pathways [Mesa](https://github.com/jdreyf/Mesa).
 
-We have also developed a novel method for Pathway analysis via network smoothing and multi-omics integration in the [PANTS](https://github.com/jdreyf/PANTS) package. This allows for network-based integrative pathway mediation analysis with `pants_hitman`, which wasn't previously available.
-
-These methods have been applied to test which analytes mediate the benefit of gastric bypass on HbA1c with Dr. ME Patti (Joslin). The paper is currently under review. We are intrested in applying these methods and developing new ones for new applications.
+These methods have been applied to test which analytes mediate the benefit of gastric bypass on HbA1c with Dr. ME Patti (Joslin). We are intrested in applying these methods and developing new ones for new applications.
 
 # Conclusion
 Congratulations for making it this far. I hope this helped you become familiar enough with R so you can understand documentation, and hopefully analyze your data.

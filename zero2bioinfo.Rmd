@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # Welcome
-You'd like to analyze and visualize your data. Your workflow will be the most flexible, powerful, and reproducible if it involves *programming*. This type of programming is now called *data science*, and it's a [hot field](https://www.glassdoor.com/List/Best-Jobs-in-America-LST_KQ0,20.htm). 
+You'd like to analyze and visualize your data. Your workflow will be the most flexible, powerful, and reproducible if it involves *programming*. This type of programming is now called *data science*, and it's one of the best jobs for the last several years according to [glassdoor](https://www.glassdoor.com/List/Best-Jobs-in-America-LST_KQ0,20.htm).  
 
 # Goal of tutorial
 Programming looks intimidating, but once you understand the basics, you should be able to Google questions, understand the answers, and be productive. I'll try to teach as much of the basics as I can in the hour I have to present this tutorial. You may wish to come back to it later to refresh and practice.
@@ -353,9 +353,11 @@ pheno <- data.frame(grp=rep(c('a', 'b', 'c'), each=3))
 rownames(pheno) <- colnames(gx)
 
 # make random gene symbols: don't worry about how i generate these
-annot <- data.frame(gene.symbols=paste0(sample(x=LETTERS, size=100, replace=TRUE), 
+annot <- data.frame(symbol=paste0(sample(x=LETTERS, size=100, replace=TRUE), 
                                         sample(x=LETTERS, size=100, replace=TRUE), 
-                                        sample(x=LETTERS, size=100, replace=TRUE)))
+                                        sample(x=LETTERS, size=100, replace=TRUE)),
+                    pathway=sample(x=c("oxphos", "glycolysis", "tca cycle", "none"), 
+                                   size=nrow(gx), replace=TRUE))
 rownames(annot) <- rownames(gx)
 ```
 
@@ -414,6 +416,16 @@ plot(x=gx[,1], y=gx[,2], xlab=colnames(gx)[1], ylab=colnames(gx)[2], las=1)
 dev.off() #close graphics device
 ```
 
+## ggplot2
+`ggplot2` is commonly used graphics package that makes pretty plots.
+```{r}
+library(ggplot2)
+gx_df <- data.frame(gx, annot)
+ggp <- ggplot(data = gx_df) + geom_point(mapping=aes(x=a1, y=a2, color=pathway))
+ggp
+ggsave(filename = "gg_scatter.pdf", plot=ggp)
+```
+
 # Differential expression using base R (not add-on packages)
 
 1. one gene at a time
@@ -462,7 +474,7 @@ toptab <- limma_contrasts(object=gx, grp=pheno$grp, contrast.v = contrast.v)
 `toptab` is ordered by overall significance of the 3 tests. We round the number of significant digits in `toptab` to 3 with `signif`. When we add annotation, we make sure the rows of `toptab` match the rows of `annot` using `annot[rownames(toptab),]`. We write this to [diff_gene_stats.csv](./diff_gene_stats.csv).
 
 ```{r}
-toptab.ann <- data.frame(signif(toptab, 3), symbol=annot[rownames(toptab),])
+toptab.ann <- data.frame(signif(toptab, 3), annot[rownames(toptab),])
 write.csv(toptab.ann, "diff_gene_stats.csv")
 ```
 
@@ -514,7 +526,7 @@ This plot doesn't tell us which genes are in common, but `venn.tab` has this inf
 We can make a heatmap of the top genes in `toptab.ann`.
 ```{r}
 top.genes <- rownames(toptab.ann)[1:10]
-ezheat(object = gx[top.genes,], labrows=toptab.ann[1:10, "symbol"], pheno.df = pheno, name=NA)
+ezheat(object = gx[top.genes,], labrows=toptab.ann[top.genes, "symbol"], pheno.df = pheno, name=NA)
 ```
 
 By default, the row scaling *centers* the rows by subtracting the row mean. Then the new mean of every row is zero. This helps see contrast between samples, instead of between rows.

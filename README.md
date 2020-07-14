@@ -1,6 +1,6 @@
 # zero2bioinfo
 
-`zero2bioinfo` is a tutorial to teach beginners with no programming experience the basics of R and common bioinformatics workflows.
+`zero2bioinfo` is a tutorial to teach beginners with no programming experience the basics of R and common bioinformatics workflows. It has been migrated online at https://jdreyf.shinyapps.io/zero2bioinfo-interactively/, which has interactive exercises, and whose repo is at https://github.com/jdreyf/zero2bioinfo-interactively.
 
 ## Usage
 1. Click on the green icon "Clone or download" then "Download ZIP"
